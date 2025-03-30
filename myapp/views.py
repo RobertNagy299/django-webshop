@@ -1,7 +1,7 @@
 #pylint: ignore no-member
 """Views.py - this is where we store This function is useds that render templates"""
 from django.shortcuts import render
-from .models import ShopItem, Concert
+from .models import ShopItem, Concert, BandMember
 # HttpResponse
 
 # Create your views here.
@@ -9,7 +9,8 @@ from .models import ShopItem, Concert
 
 def home(request):
     """This function is used to render the home template"""
-    return render(request, "home.html")
+    band_members = BandMember.objects.all()
+    return render(request, "home.html", {"members": band_members})
 
 
 def shop(request):

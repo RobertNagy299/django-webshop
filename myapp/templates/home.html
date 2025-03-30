@@ -1,4 +1,18 @@
 {% extends "base.html" %} {% block title %} Home Page {% endblock %}
 {% block content %}
 <p> this is the home page </p>
+<div>
+    {% for member in members %}
+    <div>
+        <img src=[member.photo_url] alt="photo of the member">
+        <h3>
+        {{member.name}}
+        </h3>
+        <strong>Role: {{member.role}}</strong>
+        <p>
+            {{member.description}}
+        </p>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

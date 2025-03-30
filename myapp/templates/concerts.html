@@ -1,4 +1,18 @@
 {% extends "base.html" %} {% block title %} Concerts {% endblock %}
 {% block content %}
 <p> this is the Concerts page </p>
+<div>
+    {% for concert in concerts %}
+    <div>
+        <img src="[concert.cover_photo_url]" alt="concert cover photo">
+        <h2>
+            {{concert.title}}
+        </h2>
+        <strong>{{concert.place}}, {{concert.date}}</strong>
+        <p>
+            {{concert.description}}
+        </p>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

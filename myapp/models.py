@@ -10,6 +10,7 @@ class ShopItem(models.Model):
     title = models.CharField(max_length=200)
     available = models.BooleanField(default=True)
     price = models.FloatField(default=9.99)
+    cover_photo_url = models.CharField(max_length=300)
 
 
 class Concert(models.Model):
@@ -19,15 +20,17 @@ class Concert(models.Model):
     place = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
     title = models.CharField(max_length=64)
+    cover_photo_url = models.CharField(max_length=300)
+
 
 class BandMember(models.Model):
     """Class for modelling a band member - used to display band info"""
-    name = models.CharField(max_length = 100)
+    name = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     description = models.CharField(max_length=400)
-    
+    photo_url = models.CharField(max_length=300)
+
 
 class EmailList(models.Model):
     """Singleton model - used to store the people subscribed to our email list"""
     email_address = models.EmailField(max_length=100)
-    
