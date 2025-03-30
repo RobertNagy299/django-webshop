@@ -1,4 +1,4 @@
-#pylint: ignore no-member
+#pylint: disable=no-member
 """Views.py - this is where we store This function is useds that render templates"""
 from django.shortcuts import render
 from .models import ShopItem, Concert, BandMember

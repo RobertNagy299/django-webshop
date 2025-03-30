@@ -1,10 +1,12 @@
 {% extends "base.html" %} {% block title %} Home Page {% endblock %}
+{% load static %}
 {% block content %}
+
 <p> this is the home page </p>
 <div>
     {% for member in members %}
     <div>
-        <img src=[member.photo_url] alt="photo of the member">
+        <img src ="{% static member.photo_url %}" alt="Member's Profile Picture">
         <h3>
         {{member.name}}
         </h3>
