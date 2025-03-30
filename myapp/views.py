@@ -1,8 +1,6 @@
+#pylint ignore no-member
 """Views.py - this is where we store functions that render templates"""
-# pylint: disable=no-member
-
 from django.shortcuts import render
-
 from .models import ShopItem
 # HttpResponse
 
