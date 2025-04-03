@@ -1,4 +1,6 @@
+
 """This file contains all the database model classes that the project uses for the SQLite DB"""
+#pylint: ignore=no-member
 from django.db import models
 
 # Create your models here.
@@ -34,3 +36,4 @@ class BandMember(models.Model):
 class EmailList(models.Model):
     """Singleton model - used to store the people subscribed to our email list"""
     email_address = models.EmailField(max_length=100)
+    first_name = models.CharField(max_length=32, null=True, blank=True)

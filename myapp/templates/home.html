@@ -2,13 +2,21 @@
 {% load static %}
 {% block content %}
 
-<p> this is the home page </p>
+<div class="p-5 mb-4 rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Welcome to our band's page!</h1>
+        <p class="col-md-8 fs-4">Years of experience. A diverse repertoire. We have been making music
+            together since 2009. Toured accross 3 countries, and recorded 4 studio albums and 2 EPs.
+        </p>
+        <a class="btn btn-primary btn-lg"  href="/contact" role="navigation" type="button">Contact Us</a>
+    </div>
+</div>
 <div>
     {% for member in members %}
     <div>
-        <img src ="{% static member.photo_url %}" alt="Member's Profile Picture">
+        <img src="{% static member.photo_url %}" alt="Member's Profile Picture">
         <h3>
-        {{member.name}}
+            {{member.name}}
         </h3>
         <strong>Role: {{member.role}}</strong>
         <p>

@@ -1,8 +1,45 @@
 {% extends "base.html" %} {% block title %} Concerts {% endblock %}
 {% load static %}
 {% block content %}
-<p> this is the Concerts page </p>
-<div>
+
+<div id="carouselExampleCaptions" class="carousel slide mt-3" data-bs-ride="carousel" style="height: 80vh;">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <!-- <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+            aria-label="Slide 3"></button> -->
+    </div>
+    <div class="carousel-inner" style="max-height: 80vh;">
+        {% for concert in concerts %}
+        <div class="carousel-item active" style="max-height: inherit;">
+            <img style="max-height: inherit; object-fit:cover" class="d-block w-100" src="{% static concert.cover_photo_url %}" alt="concert cover photo">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>{{concert.title}}</h5>
+                <strong>{{concert.place}}, {{concert.date}}</strong>
+                <p>
+                    {{concert.description}}
+                </p>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+
+<!-- <div>
     {% for concert in concerts %}
     <div>
         <img  src="{% static concert.cover_photo_url %}" alt="concert cover photo">
@@ -15,5 +52,5 @@
         </p>
     </div>
     {% endfor %}
-</div>
+</div> -->
 {% endblock %}
