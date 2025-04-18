@@ -35,5 +35,10 @@ class BandMember(models.Model):
 
 class EmailList(models.Model):
     """Singleton model - used to store the people subscribed to our email list"""
-    email_address = models.EmailField(max_length=100)
+    email_address = models.EmailField(max_length=100, null=False, blank=False)
     first_name = models.CharField(max_length=32, null=True, blank=True)
+
+class Inquiry(models.Model):
+    """This class represents a business inquiry that a user can send through the 'Contact Us' page"""
+    email_of_sender = models.EmailField(max_length=100, null=False, blank=False)
+    content = models.CharField(max_length=1000, null=False, blank=False)
