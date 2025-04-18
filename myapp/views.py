@@ -1,8 +1,9 @@
-#pylint: disable=no-member
+# pylint: disable=no-member
 """Views.py - this is where we store This function is useds that render templates"""
-from django.shortcuts import render
-from .models import ShopItem, Concert, BandMember
-from .forms import InquiryForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import EmailList, ShopItem, Concert, BandMember
+from .forms import EmailListForm, InquiryForm
 from django.core.mail import send_mail
 from django.conf import settings
 # HttpResponse
@@ -22,14 +23,49 @@ def shop(request):
    # print(shop_items)  # Debugging: See if this prints in the terminal
     return render(request, "shop.html", {"items": shop_items})
 
+
 def concerts(request):
     """This function is used to render the concerts view"""
     concerts_list = Concert.objects.all()
-    return render(request, "concerts.html", {"concerts" : concerts_list})
+    return render(request, "concerts.html", {"concerts": concerts_list})
+
 
 def newsletter(request):
     """This function is used to render the newsletter view"""
-    return render(request, "news.html")
+    toast_message = None
+    toast_type = None
+
+    if request.method == 'POST':
+        form = EmailListForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email_address']
+            if EmailList.objects.filter(email_address=email).exists():
+                toast_message = "This email is already subscribed."
+                toast_type = "danger"
+            else:
+                subscriber = form.save()
+                send_mail(
+                    subject='Thank you for subscribing!',
+                    message=f"Hi {subscriber.first_name}, thanks for joining our newsletter!",
+                    from_email = settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[subscriber.email_address],
+                    fail_silently=False,
+                )
+                toast_message = "You've been subscribed to the newsletter!"
+                toast_type = "success"
+                form = EmailListForm()  # Reset form
+        else:
+            toast_message = "Please provide both your email and first name."
+            toast_type = "danger"
+    else:
+        form = EmailListForm()
+
+    return render(request, 'news.html', {
+        'form': form,
+        'toast_message': toast_message,
+        'toast_type': toast_type,
+    })
+    #return render(request, "news.html")
 
 def contact(request):
     """This function is used to render the contact view"""
@@ -45,7 +81,7 @@ def contact(request):
             subject = f"New business inquiry from {inquiry.email_of_sender}"
             message = f"New business inquiry from: {inquiry.email_of_sender}:\n\n{inquiry.content}"
             from_email = settings.DEFAULT_FROM_EMAIL
-            recipient_list = ['lakatosprime420@gmail.com']  # Change this to your email
+            recipient_list = [settings.SYSADMIN_DEFAULT_EMAIL_RECIPIENT]  # Change this to your email
 
             try:
                 send_mail(subject, message, from_email, recipient_list)
@@ -66,3 +102,15 @@ def contact(request):
         'toast_message': toast_message,
         'toast_type': toast_type,
     })
+    
+
+def unsubscribe(request, token):
+    """This function handles the unsubscription from the newsletter"""
+    subscriber = get_object_or_404(EmailList, unsubscribe_token=token)
+    if request.method == "POST":
+        subscriber.delete()
+        messages.success(request, "You have been unsubscribed from the mailing list.")
+        return redirect("home")  # or a 'goodbye' page
+
+    return render(request, "unsubscribe_confirm.html", {"subscriber": subscriber})
+

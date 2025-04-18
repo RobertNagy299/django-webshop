@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Unsubscribe from Newsletter</h2>
+  <p>Hello {{ subscriber.first_name }}, are you sure you want to unsubscribe from our emails?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Yes, unsubscribe me</button>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
