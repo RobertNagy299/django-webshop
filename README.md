@@ -1,0 +1,16 @@
+# Features
+- ## Newsletter
+  - Users can subscribe
+  - Users can unsubscribe (each email contains the unsubscribe link which is based on a UUID token)
+  - The site admin can send a letter to all subscribers with a simple form on a custom admin view
+  - It is not possible to subscribe with the same email address multiple times
+  - All form fields are validated on the backend
+  - The sent emails are based on an html template to make them look good, but there is also a fallback in case the html couldn't be rendered in the email
+  - Users cannot reach the admin site
+  - Subscribed users are stored in a database
+  - Unsubscribed users are deleted from the database
+- ## Contact form
+  - Users can fill out a contact form
+  - The form is validated on the backend
+  - The form is saved in a database
+  - An email is sent to the site admin containing the contents of the contact form upon a successful submission   
