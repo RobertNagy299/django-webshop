@@ -1,8 +1,56 @@
 {% extends "base.html" %}
 {% block title %} Shop {% endblock %}
+
+{% load static %}
 {% block content %}
-<h1>Shop</h1>
-<div>
+<h2 class="display-6" style="text-align: center;">Shop</h2>
+
+<style>
+
+    @media  (max-width: 768px) {
+        .mainContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: fit-content;
+        }
+
+    
+    }
+</style>
+
+
+<div  class="container my-5 mainContainer">
+    <div class="row mainContainer">
+      {% for item in items %}
+        <div class="col-md-4 mb-4 d-flex align-items-stretch mainContainer">
+          <div class="card shadow-sm" style="width: 300px">
+            <img src="{% static item.cover_photo_url %}" style="max-height: 180px; object-fit: cover;" class="card-img-top" alt="Photo of the item">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.title }}</h5>
+              <p class="card-text">
+                {% if item.available %}
+                  <span class="text-success">Available</span>
+                {% else %}
+                  <span class="text-danger">Not available</span>
+                {% endif %}
+              </p>
+              <p class="card-text">Price: ${{ item.price }}</p>
+  
+              {% if item.available %}
+                <a href="#" class="btn btn-primary">Buy</a>
+              {% else %}
+                <button class="btn btn-secondary" disabled>Out of Stock</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  
+
+<!-- <div>
     {% for item in items %}
     <div>
         <img src={{item.cover_photo_url}} alt="Photo of the item">
@@ -10,5 +58,5 @@
 
     </div>
     {% endfor %}
-</div>
+</div> -->
 {% endblock %}

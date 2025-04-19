@@ -15,12 +15,12 @@
 </head>
 </head>
 
-<body>
+<body style="height: 100vh; display:flex; flex-direction: column;">
   <div style="width: 100vw; display: flex; flex-direction: row ; justify-content: space-between; align-items:flex-start; padding-right: 15px;">
 
 
     <nav style="width: 96vw;" class="navbar navbar-expand-lg  p-3">
-      <a class="navbar-brand" href="#">AsdBand Page</a>
+      <a class="navbar-brand" href="/">AsdBand Page</a>
 
 
      
@@ -58,8 +58,9 @@
   </div>
 
   <div class="container">{% block content %} {% endblock %}</div>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script> -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -87,5 +88,28 @@
   </script>
 
 </body>
+<div class="container" style="bottom: 0; margin-top: auto">
+  <footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item">
+        <a href="/" class="nav-link px-2 text-body-secondary">Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="/shop" class="nav-link px-2 text-body-secondary">Shop</a>
+      </li>
+      <li class="nav-item">
+        <a href="/contact" class="nav-link px-2 text-body-secondary">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a href="/concerts" class="nav-link px-2 text-body-secondary">Concerts</a>
+      </li>
+      <li class="nav-item">
+        <a href="/news" class="nav-link px-2 text-body-secondary">Newsletter</a>
+      </li>
+
+    </ul>
+    <p class="text-center text-body-secondary">© 2025 Website created by Robert Nagy</p>
+  </footer>
+</div>
 
 </html>
