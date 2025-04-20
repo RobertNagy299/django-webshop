@@ -12,6 +12,12 @@ urlpatterns = [
     path("cart/", views.cart, name="cart"),
     path("add_to_cart/<int:item_id>/", views.add_to_cart, name="add_to_cart"),
     path("remove_from_cart/<int:item_id>/", views.remove_from_cart, name="remove_from_cart"),
+    
+    # stripe views
+    path("create-checkout-session/", views.create_checkout_session, name="create_checkout_session"),
+    path("checkout/success/", views.checkout_success, name="checkout_success"),
+    
+    # admin views    
     path("send-newsletter/", admin_views.send_newsletter_view, name="send_newsletter"),
     
 

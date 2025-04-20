@@ -6,6 +6,9 @@ from .models import EmailList, ShopItem, Concert, BandMember
 from .forms import EmailListForm, InquiryForm
 from django.core.mail import send_mail
 from django.conf import settings
+import stripe
+from django.views.decorators.csrf import csrf_exempt
+
 # HttpResponse
 
 # Create your views here.
@@ -157,3 +160,46 @@ def remove_from_cart(request, item_id):
     request.session['cart'] = cart
     return redirect('cart')
  
+ 
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@csrf_exempt
+def create_checkout_session(request):
+    """This function is responsible for creating the Stripe Checkout session"""
+    cart = request.session.get('cart', [])
+
+    if not cart:
+        return redirect('cart')
+
+    line_items = []
+
+    for item in cart:
+        product = ShopItem.objects.get(id=item['id'])
+        line_items.append({
+            'price_data': {
+                'currency': 'usd',
+                'unit_amount': int(product.price * 100),
+                'product_data': {
+                    'name': product.title,
+                },
+            },
+            'quantity': item['quantity'],
+        })
+
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=line_items,
+        mode='payment',
+        success_url=request.build_absolute_uri('/checkout/success/'),
+        cancel_url=request.build_absolute_uri('/cart/'),
+    )
+
+    return redirect(session.url, code=303)
+
+
+def checkout_success(request):
+    """This function handles the successful Stripe Checkout purchase"""
+    # Clear the cart
+    request.session['cart'] = []
+    return render(request, 'checkout_success.html')
