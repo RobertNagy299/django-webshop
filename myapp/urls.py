@@ -9,7 +9,9 @@ urlpatterns = [
     path("news/", views.newsletter, name="newsletter"),
     path("concerts/", views.concerts, name="concerts"),
     path("unsubscribe/<uuid:token>/", views.unsubscribe, name="unsubscribe"),
-
+    path("cart/", views.cart, name="cart"),
+    path("add_to_cart/<int:item_id>/", views.add_to_cart, name="add_to_cart"),
+    path("remove_from_cart/<int:item_id>/", views.remove_from_cart, name="remove_from_cart"),
     path("send-newsletter/", admin_views.send_newsletter_view, name="send_newsletter"),
     
 

@@ -47,7 +47,7 @@ def newsletter(request):
                 send_mail(
                     subject='Thank you for subscribing!',
                     message=f"Hi {subscriber.first_name}, thanks for joining our newsletter!",
-                    from_email = settings.DEFAULT_FROM_EMAIL,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[subscriber.email_address],
                     fail_silently=False,
                 )
@@ -65,7 +65,8 @@ def newsletter(request):
         'toast_message': toast_message,
         'toast_type': toast_type,
     })
-    #return render(request, "news.html")
+    # return render(request, "news.html")
+
 
 def contact(request):
     """This function is used to render the contact view"""
@@ -76,18 +77,19 @@ def contact(request):
         form = InquiryForm(request.POST)
         if form.is_valid():
             inquiry = form.save()
-            
-             # Send email notification
+
+            # Send email notification
             subject = f"New business inquiry from {inquiry.email_of_sender}"
             message = f"New business inquiry from: {inquiry.email_of_sender}:\n\n{inquiry.content}"
             from_email = settings.DEFAULT_FROM_EMAIL
-            recipient_list = [settings.SYSADMIN_DEFAULT_EMAIL_RECIPIENT]  # Change this to your email
+            # Change this to your email
+            recipient_list = [settings.SYSADMIN_DEFAULT_EMAIL_RECIPIENT]
 
             try:
                 send_mail(subject, message, from_email, recipient_list)
             except Exception as e:
                 print("Email sending failed:", e)  # For debugging
-            
+
             toast_message = "Your message has been sent successfully!"
             toast_type = "success"
             form = InquiryForm()  # reset form
@@ -102,15 +104,56 @@ def contact(request):
         'toast_message': toast_message,
         'toast_type': toast_type,
     })
-    
+
 
 def unsubscribe(request, token):
     """This function handles the unsubscription from the newsletter"""
     subscriber = get_object_or_404(EmailList, unsubscribe_token=token)
     if request.method == "POST":
         subscriber.delete()
-        messages.success(request, "You have been unsubscribed from the mailing list.")
+        messages.success(
+            request, "You have been unsubscribed from the mailing list.")
         return redirect("home")  # or a 'goodbye' page
 
     return render(request, "unsubscribe_confirm.html", {"subscriber": subscriber})
 
+
+def cart(request):
+    """This function handles the shopping cart view"""
+    cart_items = request.session.get('cart', None)
+    return render(request, "cart.html", {"cart_items": cart_items})
+
+
+def add_to_cart(request, item_id):
+    """This function handles the 'Add to Cart' button in the shop view"""
+    quantity = int(request.POST.get('quantity', 1)
+                   )  # default to 1 if nothing provided
+    cart = request.session.get('cart', [])
+    added_item = ShopItem.objects.filter(id=item_id).get()
+    for item in cart:
+        if item.get("id") == item_id:
+            item['quantity'] += quantity
+            item['total'] += added_item.price * quantity
+            break
+    else:
+        cart.append({
+            'id': added_item.id,
+            'title': added_item.title,
+            'price': added_item.price,
+            'quantity': quantity,
+            'total': added_item.price * quantity,
+        })
+
+    request.session['cart'] = cart
+    return redirect('shop')
+
+
+def remove_from_cart(request, item_id):
+    """This function handles the removal of cart items"""
+    cart = request.session.get('cart', [])
+    item_id = int(item_id)
+    cart = [item for item in cart if item.get('id') != item_id]
+
+    request.session['cart'] = cart
+    return redirect('cart')
+ 

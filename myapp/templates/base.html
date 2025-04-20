@@ -12,6 +12,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
     rel="stylesheet">
+
+   <style>
+
+    @media(max-width: 991.5px) {
+      #brandImage {
+        display: none;
+      }
+    }
+   </style> 
 </head>
 </head>
 
@@ -20,7 +29,7 @@
 
 
     <nav style="width: 96vw;" class="navbar navbar-expand-lg  p-3">
-      <a class="navbar-brand" href="/">AsdBand Page</a>
+      <a id="brandImage" class="navbar-brand" href="/">AsdBand Page</a>
 
 
      
@@ -53,13 +62,22 @@
     <button style="margin-top: 18.3px;"  id="theme-toggle" class="btn btn-outline-secondary">
       <i id="theme-icon" class="bi bi-moon"></i>
     </button>
-   
+    <a href="/cart" style="margin-top: 18.3px; margin-left: 10px;" class="btn btn-outline-secondary">
+      <i class="bi bi-cart"></i>
+      {% if cart_count > 0 %}
+      <span style="top: 18px; right: 0px;"  class="position-absolute translate-middle badge rounded-pill bg-danger">
+        {{ cart_count }}
+      </span>
+      {% endif %}
+    </a>
 
   </div>
 
   <div class="container">{% block content %} {% endblock %}</div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+  <!--This 4.3.1 script is needed for the drop-down nav button to work (only visible on smaller screens)-->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
