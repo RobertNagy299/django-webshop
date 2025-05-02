@@ -1,5 +1,8 @@
 # pylint: disable=no-member
 """Views.py - this is where we store This function is useds that render templates"""
+from datetime import datetime
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import EmailList, ShopItem, Concert, BandMember
@@ -159,15 +162,16 @@ def remove_from_cart(request, item_id):
 
     request.session['cart'] = cart
     return redirect('cart')
- 
- 
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 @csrf_exempt
 def create_checkout_session(request):
     """This function is responsible for creating the Stripe Checkout session"""
     cart = request.session.get('cart', [])
+    promo_code = request.POST.get('promo_code')
 
     if not cart:
         return redirect('cart')
@@ -187,14 +191,28 @@ def create_checkout_session(request):
             'quantity': item['quantity'],
         })
 
-    session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=line_items,
-        mode='payment',
-        success_url=request.build_absolute_uri('/checkout/success/'),
-        cancel_url=request.build_absolute_uri('/cart/'),
-    )
+    session_data = {
+        "payment_method_types": ["card"],
+        "line_items": line_items,
+        "mode": "payment",
+        "success_url": request.build_absolute_uri('/checkout/success/'),
+        "cancel_url": request.build_absolute_uri('/cart/'),
 
+    }
+    if promo_code:
+        promotion_code = stripe.PromotionCode.retrieve(promo_code)
+        if datetime.fromtimestamp(promotion_code.expires_at) > datetime.now():
+            
+            session_data['discounts'] = [{"promotion_code": promo_code}]
+    # session = stripe.checkout.Session.create(
+    #     payment_method_types=['card'],
+    #     line_items=line_items,
+    #     mode='payment',
+    #     success_url=request.build_absolute_uri('/checkout/success/'),
+    #     cancel_url=request.build_absolute_uri('/cart/'),
+    # )
+    session = stripe.checkout.Session.create(**session_data)
+   
     return redirect(session.url, code=303)
 
 
@@ -202,4 +220,35 @@ def checkout_success(request):
     """This function handles the successful Stripe Checkout purchase"""
     # Clear the cart
     request.session['cart'] = []
+    # Remove the promo code from the session
+    if 'promo_code' in request.session:
+        del request.session['promo_code']
+
+     
     return render(request, 'checkout_success.html')
+
+
+
+
+
+@csrf_exempt
+def save_promo_code(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        promo_code = data.get('promo_code')
+
+        # Save the promo_code to the server-side session
+        if promo_code:
+            request.session['promo_code'] = promo_code
+            return JsonResponse({'status': 'success', 'promo_code': promo_code})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Promo code missing'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+
+
+def promo_expired_while_viewing(request):
+     # Remove the promo code from the session
+    if 'promo_code' in request.session:
+        del request.session['promo_code']
+        
+    return render(request, 'shop.html')

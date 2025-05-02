@@ -2,6 +2,8 @@
 {% block title %} Shop {% endblock %}
 
 {% load static %}
+{% load discount_tags %}
+
 {% block content %}
 <h2 class="display-6" style="text-align: center;">Shop</h2>
 
@@ -35,7 +37,17 @@
             <span class="text-danger">Not available</span>
             {% endif %}
           </p>
+          {% if promo_data %}
+          <p class="card-text">
+            <span class="text-muted text-decoration-line-through">${{ item.price }}</span>
+            <span class="text-success fw-bold ms-2">
+              ${{ item.price|discounted_price:promo_data.discount_percent }}
+            </span>
+          </p>
+          {% else %}
           <p class="card-text">Price: ${{ item.price }}</p>
+          {% endif %}
+
 
           {% if item.available %}
           <form method="POST" action="{% url 'add_to_cart' item.id %}">

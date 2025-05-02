@@ -66,7 +66,10 @@ class NewsletterEmailForm(forms.Form):
     subject = forms.CharField(max_length=511)
     message = forms.CharField(widget=forms.Textarea(attrs={"rows": 10}))
     is_call_to_action = forms.BooleanField(required=False, label="Include Call-to-Action Button?")
-
+    attach_discount = forms.BooleanField(required=False)
+    discount_percentage = forms.IntegerField(required=False, min_value=1, max_value=100, label="Discount percentage (1 - 100)")
+    discount_duration = forms.IntegerField(required=False, min_value=1, label="Discount duration (minutes)")  # duration in minutes
+    
     def clean_subject(self):
         subject = self.cleaned_data.get('subject')
         if not subject:

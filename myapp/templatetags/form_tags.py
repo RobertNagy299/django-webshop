@@ -1,3 +1,4 @@
+"""In this file, we create a custom template tag (filter, or pipe) that handles class handling"""
 from django import template
 from django.forms.boundfield import BoundField
 
