@@ -14,3 +14,5 @@ myproject/settings.py
 # Ignore SQLite DB (optional)
 db.sqlite3
 
+.coverage
+
