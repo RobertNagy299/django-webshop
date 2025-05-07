@@ -79,7 +79,8 @@ class NewsletterAdminViewTest(TestCase):
         )
 
     def test_admin_newsletter_view_get(self):
-        """This function tests if the admin can navigate to the page successfully"""
+        """This function tests if the admin can navigate to the page successfully
+        The login uses a fake admin account with fake credentials."""
         self.client.login(username='admin', password='password')
         response = self.client.get('/send-newsletter/')
         self.assertEqual(response.status_code, 200)
@@ -87,7 +88,8 @@ class NewsletterAdminViewTest(TestCase):
 
     def test_post_send_newsletter_invalid_form(self):
         """This function tests if the admin submits and empty form, the errors are handled properly
-        and the admin is prompted to fill out the required fields"""
+        and the admin is prompted to fill out the required fields. The login uses
+        a fake admin account with fake credentials."""
         self.client.login(username='admin', password='password')
         response = self.client.post(
             '/send-newsletter/', data={})  # empty form data
@@ -96,7 +98,8 @@ class NewsletterAdminViewTest(TestCase):
 
     def test_post_newsletter_without_cta_or_discount(self):
         """This function tests if the email is actually sent. Specifically,
-        this function tests an email that doesn't have a call-to-action button"""
+        this function tests an email that doesn't have a call-to-action button
+        The login uses a fake admin account with fake credentials."""
         data = {
             "subject": "Hello!",
             "message": "Test email body.",
