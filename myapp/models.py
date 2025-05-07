@@ -1,6 +1,6 @@
 
 """This file contains all the database model classes that the project uses for the SQLite DB"""
-#pylint: ignore=no-member
+# pylint: ignore=no-member
 import uuid
 from django.db import models
 
@@ -36,9 +36,12 @@ class EmailList(models.Model):
     """Singleton model - used to store the people subscribed to our email list"""
     email_address = models.EmailField(max_length=100, null=False, blank=False)
     first_name = models.CharField(max_length=32, null=False, blank=False)
-    unsubscribe_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    unsubscribe_token = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True)
+
 
 class Inquiry(models.Model):
     """This class represents a business inquiry that a user can send through the 'Contact Us' page"""
-    email_of_sender = models.EmailField(max_length=100, null=False, blank=False)
+    email_of_sender = models.EmailField(
+        max_length=100, null=False, blank=False)
     content = models.CharField(max_length=1000, null=False, blank=False)

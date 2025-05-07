@@ -11,15 +11,19 @@ urlpatterns = [
     path("unsubscribe/<uuid:token>/", views.unsubscribe, name="unsubscribe"),
     path("cart/", views.cart, name="cart"),
     path("add_to_cart/<int:item_id>/", views.add_to_cart, name="add_to_cart"),
-    path("remove_from_cart/<int:item_id>/", views.remove_from_cart, name="remove_from_cart"),
+    path("remove_from_cart/<int:item_id>/",
+         views.remove_from_cart, name="remove_from_cart"),
     path('save-promo-code/', views.save_promo_code, name='save_promo_code'),
-    path("promo-expired-while-viewing/", views.promo_expired_while_viewing, name="promo_expired_while_viewing"),
+    path("promo-expired-while-viewing/", views.promo_expired_while_viewing,
+         name="promo_expired_while_viewing"),
     # stripe views
-    path("create-checkout-session/", views.create_checkout_session, name="create_checkout_session"),
+    path("create-checkout-session/", views.create_checkout_session,
+         name="create_checkout_session"),
     path("checkout/success/", views.checkout_success, name="checkout_success"),
-    
-    # admin views    
-    path("send-newsletter/", admin_views.send_newsletter_view, name="send_newsletter"),
-    
+
+    # admin views
+    path("send-newsletter/", admin_views.send_newsletter_view,
+         name="send_newsletter"),
+
 
 ]

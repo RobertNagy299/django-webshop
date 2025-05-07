@@ -9,9 +9,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import stripe
 from datetime import datetime, timedelta
- 
 
-stripe.api_key = settings.STRIPE_SECRET_KEY  # Make sure you set this properly in your settings.py
+
+# Make sure you set this properly in your settings.py
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 @staff_member_required
@@ -40,14 +41,15 @@ def send_newsletter_view(request):
                     )
 
                     current_date = datetime.now()
-                    expiration_date = current_date + timedelta(minutes=discount_duration)
+                    expiration_date = current_date + \
+                        timedelta(minutes=discount_duration)
                     # 2. Create a Promotion Code for that Coupon (with expiration if needed)
                     promotion_code = stripe.PromotionCode.create(
-                        
+
                         coupon=coupon.id,
                         expires_at=expiration_date,  # expire after X minutes
                     )
-                    
+
                     coupon_id = promotion_code.id
 
                 except Exception as e:
@@ -56,34 +58,31 @@ def send_newsletter_view(request):
                     return render(request, "admin/send_newsletter.html",
                                   {"form": form, 'toast_message': toast_message, 'toast_type': toast_type})
 
-        
-            
             recipients = EmailList.objects.values()
 
             for subscriber in recipients:
                 email = subscriber.get("email_address")
                 name = subscriber.get("first_name")
                 unsub_token = subscriber.get("unsubscribe_token")
-                unsub_link = f"{settings.DEFAULT_HOST_BASE_URL}/unsubscribe/{unsub_token}" 
-                
-                 # Build the CTA URL
+                unsub_link = f"{settings.DEFAULT_HOST_BASE_URL}/unsubscribe/{unsub_token}"
+
+                # Build the CTA URL
                 cta_link = None
                 if is_cta:
                     cta_link = f"{settings.DEFAULT_HOST_BASE_URL}/shop/"
                     if coupon_id:
                         cta_link += f"?promo_code={coupon_id}"
 
-                
-                
                 html_message = render_to_string('newsletter-email-template.html',
-                                            {'message': message,
-                                             "is_cta": is_cta,
-                                             "cta_link": cta_link,
-                                             "name": name,
-                                             "unsubscribe_link": unsub_link})
+                                                {'message': message,
+                                                 "is_cta": is_cta,
+                                                 "cta_link": cta_link,
+                                                 "name": name,
+                                                 "unsubscribe_link": unsub_link})
                 plain_message = strip_tags(html_message)
-                send_mail(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [email], False, html_message=html_message)
-            
+                send_mail(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [
+                          email], False, html_message=html_message)
+
             toast_message = "Letter sent to all subscribers!"
             toast_type = "success"
         else:

@@ -70,7 +70,6 @@ def newsletter(request):
         'toast_message': toast_message,
         'toast_type': toast_type,
     })
-    
 
 
 def contact(request):
@@ -201,10 +200,10 @@ def create_checkout_session(request):
     if promo_code:
         promotion_code = stripe.PromotionCode.retrieve(promo_code)
         if datetime.fromtimestamp(promotion_code.expires_at) > datetime.now():
-            
+
             session_data['discounts'] = [{"promotion_code": promo_code}]
     session = stripe.checkout.Session.create(**session_data)
-   
+
     return redirect(session.url, code=303)
 
 
@@ -216,11 +215,7 @@ def checkout_success(request):
     if 'promo_code' in request.session:
         del request.session['promo_code']
 
-     
     return render(request, 'checkout_success.html')
-
-
-
 
 
 @csrf_exempt
@@ -239,8 +234,8 @@ def save_promo_code(request):
 
 
 def promo_expired_while_viewing(request):
-     # Remove the promo code from the session
+    """This function removes the promo code if it expires while the user is viewing the site"""
     if 'promo_code' in request.session:
         del request.session['promo_code']
-        
+
     return render(request, 'shop.html')

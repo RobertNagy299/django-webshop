@@ -3,10 +3,11 @@ from django import template
 
 register = template.Library()
 
+
 @register.filter
 def discounted_price(price, discount_percent):
     try:
-        discounted =  price * (1.0 - (discount_percent / 100))
+        discounted = price * (1.0 - (discount_percent / 100))
         return f"{discounted:.2f}"
     except (TypeError, ValueError):
         return price
