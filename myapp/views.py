@@ -26,7 +26,6 @@ def home(request):
 def shop(request):
     """This function is used to render the shop template with the shop items"""
     shop_items = ShopItem.objects.all()
-   # print(shop_items)  # Debugging: See if this prints in the terminal
     return render(request, "shop.html", {"items": shop_items})
 
 
@@ -71,7 +70,7 @@ def newsletter(request):
         'toast_message': toast_message,
         'toast_type': toast_type,
     })
-    # return render(request, "news.html")
+    
 
 
 def contact(request):
@@ -204,13 +203,6 @@ def create_checkout_session(request):
         if datetime.fromtimestamp(promotion_code.expires_at) > datetime.now():
             
             session_data['discounts'] = [{"promotion_code": promo_code}]
-    # session = stripe.checkout.Session.create(
-    #     payment_method_types=['card'],
-    #     line_items=line_items,
-    #     mode='payment',
-    #     success_url=request.build_absolute_uri('/checkout/success/'),
-    #     cancel_url=request.build_absolute_uri('/cart/'),
-    # )
     session = stripe.checkout.Session.create(**session_data)
    
     return redirect(session.url, code=303)

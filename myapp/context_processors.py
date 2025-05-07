@@ -17,7 +17,6 @@ def cart_count(request):
 def promo_code_context(request):
     """This function handles the promo code decoding to apply UI changes"""
     promo_code = request.session.get('promo_code')
-    print("Promo code = ", promo_code)
     promo_data = None
 
     if promo_code:
