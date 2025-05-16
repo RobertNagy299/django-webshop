@@ -5,6 +5,20 @@ https://github.com/RobertNagy299/django-webshop
 
 https://pypi.org/project/band-landing-page-webshop/0.2.0/
 
+# Demo Video
+// TODO
+
+# Test coverage
+I used the `coverage` package and Django's built in testing framework to
+achieve at least 50% test coverage for all major python files.
+
+Coverage report can be seen in the demo video 
+
+# Code quality
+
+I used `Flake8` and `bandit` to assure that my code follows Pythonic coding standards, and that it doesn't contain any vulnerabilities.
+The results of the code analysis can be seen in the demo video.
+
 # Features
 The website includes a dark/light mode switch, and every page is responsive and looks great on any device!
 
