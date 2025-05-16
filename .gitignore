@@ -14,5 +14,14 @@ myproject/settings.py
 # Ignore SQLite DB (optional)
 db.sqlite3
 
+# Ignore testing
 .coverage
 
+# Ignore dist
+
+dist/
+band_landing_page_webshop.egg-info/
+MANIFEST.in
+setup.cfg
+requirements.txt
+setup.py
