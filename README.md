@@ -3,7 +3,7 @@ https://github.com/RobertNagy299/django-webshop
 
 # PyPi
 
-https://pypi.org/project/band-landing-page-webshop/0.2.0/
+https://pypi.org/project/band-landing-page-webshop/
 
 # Demo Video
 
