@@ -6,7 +6,9 @@ https://github.com/RobertNagy299/django-webshop
 https://pypi.org/project/band-landing-page-webshop/0.2.0/
 
 # Demo Video
-// TODO
+
+https://youtu.be/7nax_fFP0wk
+
 
 # Test coverage
 I used the `coverage` package and Django's built in testing framework to
